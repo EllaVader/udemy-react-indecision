@@ -1,13 +1,7 @@
-'use strict';
-
 console.log('App.js is running');
 
 // JSX - Javascript XML
-var template = React.createElement(
-  'h1',
-  null,
-  'Indecision App'
-);
+var template = <h1>Indecision App</h1>;
 //Babel converts the template variable above into the javascript below
 //the div with id of 'app' in our index.html
 var appRoot = document.getElementById('app');
