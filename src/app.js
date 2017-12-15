@@ -1,12 +1,44 @@
 console.log('App.js is running');
 
+var app = {
+  title: 'Indecision App',
+  subTitle: 'Put your life in the hands of a computer',
+  options: ['One','Two']
+};
+
 // JSX - Javascript XML
-var template = <h1>Indecision App</h1>;
-//Babel converts the template variable above into the javascript below
-//the div with id of 'app' in our index.html
+var template = (
+  <div>
+    <h1>{app.title}</h1>
+    {app.subTitle && <p>{app.subTitle}</p>}
+    <p>{app.options && app.options.length > 0 ? 'Here are your options' : 'No options'}</p>
+    <ol>
+      <li>Item one</li>
+      <li>Item two</li>
+    </ol>
+  </div>
+);
+
+var user = {
+  name: 'Janine',
+  age: 49,
+  location: 'Glenmoore'
+};
+
+function getLocation(location) {
+ if(location){
+   return <p>Location: {location}</p>;
+ } 
+}
+
+var templateTwo = (
+  <div>
+    <h1>{user.name ? user.name : 'Anonymous'}</h1>
+    { (user.age && user.age >= 18) && <p>Age: {user.age}</p>}
+    { getLocation(user.location)}
+  </div>
+);
+
 var appRoot = document.getElementById('app');
 
-//.render takes 2 args, first is the element, 2nd is where to render it
 ReactDOM.render(template, appRoot);
-//note that this alone, won't work.  The browser doesn't know how to render the template variable with that jsx in it.
-//use Babel to compile our jsx into javascript so the browser knows how to use it.

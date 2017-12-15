@@ -2,17 +2,81 @@
 
 console.log('App.js is running');
 
+var app = {
+  title: 'Indecision App',
+  subTitle: 'Put your life in the hands of a computer',
+  options: ['One', 'Two']
+};
+
 // JSX - Javascript XML
 var template = React.createElement(
-  'h1',
+  'div',
   null,
-  'Indecision App'
+  React.createElement(
+    'h1',
+    null,
+    app.title
+  ),
+  app.subTitle && React.createElement(
+    'p',
+    null,
+    app.subTitle
+  ),
+  React.createElement(
+    'p',
+    null,
+    app.options && app.options.length > 0 ? 'Here are your options' : 'No options'
+  ),
+  React.createElement(
+    'ol',
+    null,
+    React.createElement(
+      'li',
+      null,
+      'Item one'
+    ),
+    React.createElement(
+      'li',
+      null,
+      'Item two'
+    )
+  )
 );
-//Babel converts the template variable above into the javascript below
-//the div with id of 'app' in our index.html
+
+var user = {
+  name: 'Janine',
+  age: 49,
+  location: 'Glenmoore'
+};
+
+function getLocation(location) {
+  if (location) {
+    return React.createElement(
+      'p',
+      null,
+      'Location: ',
+      location
+    );
+  }
+}
+
+var templateTwo = React.createElement(
+  'div',
+  null,
+  React.createElement(
+    'h1',
+    null,
+    user.name ? user.name : 'Anonymous'
+  ),
+  user.age && user.age >= 18 && React.createElement(
+    'p',
+    null,
+    'Age: ',
+    user.age
+  ),
+  getLocation(user.location)
+);
+
 var appRoot = document.getElementById('app');
 
-//.render takes 2 args, first is the element, 2nd is where to render it
 ReactDOM.render(template, appRoot);
-//note that this alone, won't work.  The browser doesn't know how to render the template variable with that jsx in it.
-//use Babel to compile our jsx into javascript so the browser knows how to use it.
