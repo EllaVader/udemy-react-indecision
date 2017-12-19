@@ -43,8 +43,18 @@ class Action extends React.Component {
 
 class Options extends React.Component {
   
+  //define a constructor for this class sine we want to perserve the binding of it on the event methods
+  //we lose the binding on event handler methods
+  constructor(props) {
+    //the react constructor takes the props argument
+    super(props);
+    //when this is call, the context will now be correct
+    this.handleRemoveAll = this.handleRemoveAll.bind(this);
+  }
+
   handleRemoveAll() {
-    alert('handleRemoveAll');
+    console.log(this.props.options);
+    //alert('handleRemoveAll');
   }
 
   render() {
