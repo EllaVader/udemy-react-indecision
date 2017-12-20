@@ -19,10 +19,11 @@ var IndecisionApp = function (_React$Component) {
 
     _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
     _this.handlePick = _this.handlePick.bind(_this);
+    _this.handleAddOption = _this.handleAddOption.bind(_this);
 
     //we want to track the state of the options as they get updated
     _this.state = {
-      options: ['Thing one', 'Thing two', 'Thing three']
+      options: []
     };
     return _this;
   }
@@ -49,6 +50,23 @@ var IndecisionApp = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleAddOption',
+    value: function handleAddOption(option) {
+      //error check
+      if (!option) {
+        return 'Enter valid value to add item';
+      } else if (this.state.options.indexOf(option) > -1) {
+        return 'This option already exists';
+      }
+
+      // we don't want to manipulate the state or prevState object directly, so add it to a new array
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.concat(option)
+        };
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var title = 'Indecision';
@@ -66,7 +84,9 @@ var IndecisionApp = function (_React$Component) {
           options: this.state.options,
           handleDeleteOptions: this.handleDeleteOptions
         }),
-        React.createElement(AddOption, null)
+        React.createElement(AddOption, {
+          handleAddOption: this.handleAddOption
+        })
       );
     }
   }]);
@@ -195,22 +215,40 @@ var Option = function (_React$Component5) {
 var AddOption = function (_React$Component6) {
   _inherits(AddOption, _React$Component6);
 
-  function AddOption() {
+  //we need a constructor for this class because we are using "this" below in the handleAddOption event handler method
+  function AddOption(props) {
     _classCallCheck(this, AddOption);
 
-    return _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).apply(this, arguments));
+    var _this6 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
+
+    _this6.handleAddOption = _this6.handleAddOption.bind(_this6);
+
+    //keeping track of the error message
+    _this6.state = {
+      error: undefined
+    };
+    return _this6;
   }
+
+  // the behavior belongs here (check if option is valued and clear the form)
+  // but we also call the parent's handleAddOption because it owns the state of the options array
+
 
   _createClass(AddOption, [{
     key: 'handleAddOption',
     value: function handleAddOption(e) {
+
       e.preventDefault();
       var option = e.target.elements.option.value.trim();
-      if (option) {
-        alert(option);
-        //clear out the text box
-        e.target.elements.option.value = '';
-      }
+      //call the parent's method
+      var error = this.props.handleAddOption(option);
+
+      this.setState(function () {
+        return { error: error };
+      });
+
+      //clear out the text box
+      e.target.elements.option.value = '';
     }
   }, {
     key: 'render',
@@ -218,6 +256,11 @@ var AddOption = function (_React$Component6) {
       return React.createElement(
         'div',
         null,
+        this.state.error && React.createElement(
+          'p',
+          null,
+          this.state.error
+        ),
         React.createElement(
           'form',
           { onSubmit: this.handleAddOption },
