@@ -1,14 +1,49 @@
 class IndecisionApp extends React.Component {
+  
+  constructor(props){
+    super(props);
+    //need to bind so the child component can have a proper reference to
+    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+    this.handlePick = this.handlePick.bind(this);
+
+    //we want to track the state of the options as they get updated
+    this.state = {
+      options: ['Thing one', 'Thing two', 'Thing three']
+    };
+  }
+
+  handlePick() {
+    //pick a random element in the array
+    const randomNum = Math.floor(Math.random() * this.state.options.length);
+    const option = this.state.options[randomNum];
+    alert(option);
+  }
+
+  // handleDeleteOptions method needed here at parent level
+  //but a child component will call it.
+  handleDeleteOptions() {
+    this.setState(() => {
+      return {
+        options: []
+      }
+    });
+  }
+  
   render() {
     const title = 'Indecision';
     const subtitle = 'Put your life in the hands of a computer';
-    const options = ['Thing one', 'Thing two', 'Thing four'];
 
     return (
       <div>
         <Header title={title} subtitle={subtitle}/>
-        <Action />
-        <Options options={options}/>
+        <Action 
+          hasOptions={this.state.options.length > 0}
+          handlePick={this.handlePick}
+          />
+        <Options 
+          options={this.state.options}
+          handleDeleteOptions={this.handleDeleteOptions}
+          />
         <AddOption />
       </div>
     )
@@ -27,40 +62,27 @@ class Header extends React.Component {
 }
 
 class Action extends React.Component {
-
-  handlePick() {
-    alert('handlePick');
-  }
-
   render() {
     return (
       <div>
-        <button onClick={this.handlePick}>What should I do?</button>
+        <button 
+          onClick={this.props.handlePick}
+          disabled={!this.props.hasOptions}
+        >
+          What should I do?
+        </button>
       </div>
     );
   }
 }
 
 class Options extends React.Component {
-  
-  //define a constructor for this class sine we want to perserve the binding of it on the event methods
-  //we lose the binding on event handler methods
-  constructor(props) {
-    //the react constructor takes the props argument
-    super(props);
-    //when this is call, the context will now be correct
-    this.handleRemoveAll = this.handleRemoveAll.bind(this);
-  }
 
-  handleRemoveAll() {
-    console.log(this.props.options);
-    //alert('handleRemoveAll');
-  }
-
+  //when the remove all button is clicked, it will call handleDeleteOptions from the parent.
   render() {
     return (
       <div>
-        <button onClick={this.handleRemoveAll}>Remove All</button>
+        <button onClick={this.props.handleDeleteOptions}>Remove All</button>
         {
           this.props.options.map(option => <Option key={option} optionText={option}/>)
         }
