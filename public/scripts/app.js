@@ -49,6 +49,22 @@ var Counter = function (_React$Component) {
         };
       });
     }
+
+    // you can also pass in an object to setState, don't need to pass in a function
+    // passing in an object is an older way may end up becoming absolute
+    // setState is asynchronous so we don't know what order this will be executed in.
+    // don't use this way as it's problematic, use the function way.
+    // you can use this if don't need access to the previous values.
+    // handleReset() {
+    //   this.setState({
+    //     count: 0
+    //   });
+
+    //   this.setState({
+    //     count: this.state.count + 1
+    //   });
+    // }
+
   }, {
     key: 'handleReset',
     value: function handleReset() {
