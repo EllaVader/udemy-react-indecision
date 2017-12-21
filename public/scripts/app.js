@@ -29,7 +29,30 @@ var IndecisionApp = function (_React$Component) {
     return _this;
   }
 
+  // lifecycle method on React that is called at the beginning of the lifecycle
+
+
   _createClass(IndecisionApp, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      console.log('Component did mount!');
+    }
+    // lifecyle method on React when a component updates
+
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      console.log('Component did update!');
+    }
+
+    // lifecycle method on React when a component when a new component is loaded (i.e. navigating to a new page)
+
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      console.log('Component will unmount');
+    }
+  }, {
     key: 'handlePick',
     value: function handlePick() {
       //pick a random element in the array
@@ -71,7 +94,7 @@ var IndecisionApp = function (_React$Component) {
       }
 
       // Use set state to update the state of the property -- it will automatically re-render as it see's it's been updated
-      // we don't want to manipulate the state or prevState object directly, so add it to a new array
+      // we don't want to manipulate the state or prevState object directly, so set the options prop to a new array
       this.setState(function (prevState) {
         return {
           options: prevState.options.concat(option)
@@ -188,7 +211,7 @@ var Option = function Option(props) {
 var AddOption = function (_React$Component2) {
   _inherits(AddOption, _React$Component2);
 
-  //we need a constructor for this class because we are using "this" below in the handleAddOption event handler method
+  // we need a constructor for this class because we are using "this" below in the handleAddOption event handler method
   function AddOption(props) {
     _classCallCheck(this, AddOption);
 
@@ -196,14 +219,14 @@ var AddOption = function (_React$Component2) {
 
     _this2.handleAddOption = _this2.handleAddOption.bind(_this2);
 
-    //keeping track of the error message
+    // keeping track of the error message
     _this2.state = {
       error: undefined
     };
     return _this2;
   }
 
-  // the behavior belongs here (check if option is valued and clear the form)
+  // we have a handleAddOption here (check if option is valued and clear the form)
   // but we also call the parent's handleAddOption because it owns the state of the options array
 
 
@@ -213,19 +236,20 @@ var AddOption = function (_React$Component2) {
 
       e.preventDefault();
       var option = e.target.elements.option.value.trim();
-      //call the parent's method
+      // call the parent's method
       var error = this.props.handleAddOption(option);
 
       this.setState(function () {
         return { error: error };
       });
 
-      //clear out the text box
+      // clear out the text box
       e.target.elements.option.value = '';
     }
   }, {
     key: 'render',
     value: function render() {
+      // onSubmit call this classes handleAddOption, which calls the parent class handleAddOption
       return React.createElement(
         'div',
         null,
