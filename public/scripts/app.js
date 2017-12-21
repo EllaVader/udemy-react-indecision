@@ -8,295 +8,158 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var IndecisionApp = function (_React$Component) {
-  _inherits(IndecisionApp, _React$Component);
+var Counter = function (_React$Component) {
+  _inherits(Counter, _React$Component);
 
-  function IndecisionApp(props) {
-    _classCallCheck(this, IndecisionApp);
+  function Counter(props) {
+    _classCallCheck(this, Counter);
 
-    //need to bind so the child component can have a proper reference to
-    var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).call(this, props));
 
-    _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
-    _this.handlePick = _this.handlePick.bind(_this);
-    _this.handleAddOption = _this.handleAddOption.bind(_this);
-    _this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
+    _this.handleAddOne = _this.handleAddOne.bind(_this);
+    _this.handleMinusOne = _this.handleMinusOne.bind(_this);
+    _this.handleReset = _this.handleReset.bind(_this);
 
-    //we want to track the state of the options as they get updated
+    // track the following state default values
     _this.state = {
-      options: props.options
+      count: 0
     };
     return _this;
   }
 
-  // lifecycle method on React that is called at the beginning of the life-cycle
-
-
-  _createClass(IndecisionApp, [{
+  _createClass(Counter, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
 
-      try {
-        //if parsing throws an exception, catch it and do nothing
-        var json = localStorage.getItem('options');
-        var options = JSON.parse(json);
-        //if options is not empty, then load it.
-        if (options) {
-          this.setState(function () {
-            return { options: options };
-          });
-        }
-      } catch (e) {
-        // do nothing at all
+      var stringCount = localStorage.getItem('count');
+      // convert the string to an int.
+      var count = parseInt(stringCount, 10);
+
+      // make sure that it is a valid number
+      if (!isNaN(count)) {
+        this.setState(function () {
+          return { count: count };
+        });
       }
     }
-    // lifecyle method on React when a component updates / changes
-
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
-      //save our options to local storage
-      if (prevState.options.length !== this.state.options.length) {
-        var json = JSON.stringify(this.state.options);
-        localStorage.setItem('options', json);
+      if (prevState.count !== this.state.count) {
+        //this will get converted into a string
+        localStorage.setItem('count', this.state.count);
       }
     }
-
-    // lifecycle method on React when a component when a new component is loaded (i.e. navigating to a new page)
-
   }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      console.log('Component will unmount');
-    }
-  }, {
-    key: 'handlePick',
-    value: function handlePick() {
-      //pick a random element in the array
-      var randomNum = Math.floor(Math.random() * this.state.options.length);
-      var option = this.state.options[randomNum];
-      alert(option);
-    }
-
-    // handleDeleteOptions method needed here at parent level
-    // but a child component will call it.
-
-  }, {
-    key: 'handleDeleteOptions',
-    value: function handleDeleteOptions() {
-      //short cut way to call set state - wrap object in parenthesis
-      this.setState(function () {
-        return { options: [] };
-      });
-    }
-  }, {
-    key: 'handleDeleteOption',
-    value: function handleDeleteOption(optionToRemove) {
+    key: 'handleMinusOne',
+    value: function handleMinusOne() {
       this.setState(function (prevState) {
         return {
-          options: prevState.options.filter(function (option) {
-            return option !== optionToRemove;
-          })
+          count: prevState.count - 1
         };
       });
     }
   }, {
-    key: 'handleAddOption',
-    value: function handleAddOption(option) {
-      //error check
-      if (!option) {
-        return 'Enter valid value to add item';
-      } else if (this.state.options.indexOf(option) > -1) {
-        return 'This option already exists';
-      }
-
-      // Use set state to update the state of the property -- it will automatically re-render as it see's it's been updated
-      // we don't want to manipulate the state or prevState object directly, so set the options prop to a new array
+    key: 'handleAddOne',
+    value: function handleAddOne() {
+      // to change the state of the count property, you need to call setState
+      // setState takes a method as an argument.  It returns an object back
+      // setState has one argument, which is the objects previous state
+      // only update the properties on the object that we care about, we can ignore the others
       this.setState(function (prevState) {
         return {
-          options: prevState.options.concat(option)
+          count: prevState.count + 1
+        };
+      });
+    }
+
+    // you can also pass in an object to setState, don't need to pass in a function
+    // passing in an object is an older way may end up becoming absolute
+    // setState is asynchronous so we don't know what order this will be executed in.
+    // don't use this way as it's problematic, use the function way.
+    // you can use this if don't need access to the previous values.
+    // handleReset() {
+    //   this.setState({
+    //     count: 0
+    //   });
+
+    //   this.setState({
+    //     count: this.state.count + 1
+    //   });
+    // }
+
+  }, {
+    key: 'handleReset',
+    value: function handleReset() {
+      this.setState(function () {
+        return {
+          count: 0
         };
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var subtitle = 'Put your life in the hands of a computer';
-
       return React.createElement(
         'div',
         null,
-        React.createElement(Header, { subtitle: subtitle }),
-        React.createElement(Action, {
-          hasOptions: this.state.options.length > 0,
-          handlePick: this.handlePick
-        }),
-        React.createElement(Options, {
-          options: this.state.options,
-          handleDeleteOptions: this.handleDeleteOptions,
-          handleDeleteOption: this.handleDeleteOption
-        }),
-        React.createElement(AddOption, {
-          handleAddOption: this.handleAddOption
-        })
-      );
-    }
-  }]);
-
-  return IndecisionApp;
-}(React.Component);
-
-IndecisionApp.defaultProps = {
-  options: []
-};
-
-var Header = function Header(props) {
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'h1',
-      null,
-      props.title
-    ),
-    props.subtitle && React.createElement(
-      'h2',
-      null,
-      props.subtitle
-    )
-  );
-};
-
-// creating default properties
-Header.defaultProps = {
-  title: 'Indecision'
-};
-
-var Action = function Action(props) {
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'button',
-      {
-        onClick: props.handlePick,
-        disabled: !props.hasOptions
-      },
-      'What should I do?'
-    )
-  );
-};
-
-var Options = function Options(props) {
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'button',
-      { onClick: props.handleDeleteOptions },
-      'Remove All'
-    ),
-    props.options.length === 0 && React.createElement(
-      'p',
-      null,
-      'Please add an option to get started!'
-    ),
-    props.options.map(function (option) {
-      return React.createElement(Option, {
-        key: option,
-        optionText: option,
-        handleDeleteOption: props.handleDeleteOption
-      });
-    })
-  );
-};
-
-var Option = function Option(props) {
-  return React.createElement(
-    'div',
-    null,
-    props.optionText,
-    React.createElement(
-      'button',
-      {
-        onClick: function onClick(e) {
-          // use the onclick event that takes the event as an argument,
-          // now call parent handle.deleteOption with the text we want to delete.
-          props.handleDeleteOption(props.optionText);
-        }
-      },
-      'remove'
-    )
-  );
-};
-
-var AddOption = function (_React$Component2) {
-  _inherits(AddOption, _React$Component2);
-
-  // we need a constructor for this class because we are using "this" below in the handleAddOption event handler method
-  function AddOption(props) {
-    _classCallCheck(this, AddOption);
-
-    var _this2 = _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).call(this, props));
-
-    _this2.handleAddOption = _this2.handleAddOption.bind(_this2);
-
-    // keeping track of the error message
-    _this2.state = {
-      error: undefined
-    };
-    return _this2;
-  }
-
-  // we have a handleAddOption here (check if option is valued and clear the form)
-  // but we also call the parent's handleAddOption because it owns the state of the options array
-
-
-  _createClass(AddOption, [{
-    key: 'handleAddOption',
-    value: function handleAddOption(e) {
-
-      e.preventDefault();
-      var option = e.target.elements.option.value.trim();
-      // call the parent's method
-      var error = this.props.handleAddOption(option);
-
-      this.setState(function () {
-        return { error: error };
-      });
-
-      if (!error) {
-        // clear out the text box
-        e.target.elements.option.value = '';
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      // onSubmit call this classes handleAddOption, which calls the parent class handleAddOption
-      return React.createElement(
-        'div',
-        null,
-        this.state.error && React.createElement(
-          'p',
+        React.createElement(
+          'h1',
           null,
-          this.state.error
+          'Count: ',
+          this.state.count
         ),
         React.createElement(
-          'form',
-          { onSubmit: this.handleAddOption },
-          React.createElement('input', { type: 'text', name: 'option' }),
-          React.createElement(
-            'button',
-            null,
-            'Add Option'
-          )
+          'button',
+          { onClick: this.handleAddOne },
+          '+1'
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.handleMinusOne },
+          '-1'
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.handleReset },
+          'reset'
         )
       );
     }
   }]);
 
-  return AddOption;
+  return Counter;
 }(React.Component);
 
-ReactDOM.render(React.createElement(IndecisionApp, null), document.getElementById('app'));
+ReactDOM.render(React.createElement(Counter, null), document.getElementById('app'));
+
+// let count = 0;
+// const addOne = () => {
+//   count++;
+//   renderCounterApp();
+// };
+
+// const minusOne = () => {
+//   count--;
+//   renderCounterApp();
+// };
+
+// const reset = () => {
+//   count = 0;
+//   renderCounterApp();
+// };
+
+// const renderCounterApp = () => {
+//   const templateTwo = (
+//     <div>
+//       <h1>Count: {count}</h1>
+//       <button onClick={addOne}>+1</button>
+//       <button onClick={minusOne}>-1</button>
+//       <button onClick={reset}>reset</button>
+//     </div>
+//   );
+//   //will only render those elements that need to be updated
+//   ReactDOM.render(templateTwo, appRoot);
+// };
+
+// renderCounterApp();

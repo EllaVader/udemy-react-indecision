@@ -10,7 +10,7 @@ class IndecisionApp extends React.Component {
 
     //we want to track the state of the options as they get updated
     this.state = {
-      options: props.options
+      options: []
     };
   }
 
@@ -100,10 +100,6 @@ class IndecisionApp extends React.Component {
       </div>
     )
   }
-}
-
-IndecisionApp.defaultProps = {
-  options: []
 }
 
 const Header = (props) => {
