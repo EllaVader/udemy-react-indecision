@@ -14,14 +14,30 @@ class IndecisionApp extends React.Component {
     };
   }
 
-  // lifecycle method on React that is called at the beginning of the lifecycle
+  // lifecycle method on React that is called at the beginning of the life-cycle
   componentDidMount() {
-    console.log('Component did mount!');
+   
+    try {
+      //if parsing throws an exception, catch it and do nothing
+      const json = localStorage.getItem('options');
+      const options = JSON.parse(json);
+      //if options is not empty, then load it.
+      if (options) {
+        this.setState(() => ({ options }));
+      }
+
+    } catch (e) {
+      // do nothing at all
+    }
 
   }
-  // lifecyle method on React when a component updates
+  // lifecyle method on React when a component updates / changes
   componentDidUpdate(prevProps, prevState){
-    console.log('Component did update!');
+    //save our options to local storage
+    if(prevState.options.length !== this.state.options.length ){
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json);
+    }
   }
 
   // lifecycle method on React when a component when a new component is loaded (i.e. navigating to a new page)
@@ -121,6 +137,7 @@ const Options = (props) => {
   return (
     <div>
       <button onClick={props.handleDeleteOptions}>Remove All</button>
+      {props.options.length === 0 && <p>Please add an option to get started!</p>}
       {
         props.options.map(option => (
           <Option 
@@ -175,8 +192,11 @@ class AddOption extends React.Component {
     
     this.setState(() => ({ error }));
 
-    // clear out the text box
-    e.target.elements.option.value = '';
+    if(!error){
+       // clear out the text box
+       e.target.elements.option.value = '';
+    }
+   
   }
   render() {
     // onSubmit call this classes handleAddOption, which calls the parent class handleAddOption

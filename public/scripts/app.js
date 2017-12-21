@@ -29,20 +29,37 @@ var IndecisionApp = function (_React$Component) {
     return _this;
   }
 
-  // lifecycle method on React that is called at the beginning of the lifecycle
+  // lifecycle method on React that is called at the beginning of the life-cycle
 
 
   _createClass(IndecisionApp, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      console.log('Component did mount!');
+
+      try {
+        //if parsing throws an exception, catch it and do nothing
+        var json = localStorage.getItem('options');
+        var options = JSON.parse(json);
+        //if options is not empty, then load it.
+        if (options) {
+          this.setState(function () {
+            return { options: options };
+          });
+        }
+      } catch (e) {
+        // do nothing at all
+      }
     }
-    // lifecyle method on React when a component updates
+    // lifecyle method on React when a component updates / changes
 
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate(prevProps, prevState) {
-      console.log('Component did update!');
+      //save our options to local storage
+      if (prevState.options.length !== this.state.options.length) {
+        var json = JSON.stringify(this.state.options);
+        localStorage.setItem('options', json);
+      }
     }
 
     // lifecycle method on React when a component when a new component is loaded (i.e. navigating to a new page)
@@ -179,6 +196,11 @@ var Options = function Options(props) {
       { onClick: props.handleDeleteOptions },
       'Remove All'
     ),
+    props.options.length === 0 && React.createElement(
+      'p',
+      null,
+      'Please add an option to get started!'
+    ),
     props.options.map(function (option) {
       return React.createElement(Option, {
         key: option,
@@ -243,8 +265,10 @@ var AddOption = function (_React$Component2) {
         return { error: error };
       });
 
-      // clear out the text box
-      e.target.elements.option.value = '';
+      if (!error) {
+        // clear out the text box
+        e.target.elements.option.value = '';
+      }
     }
   }, {
     key: 'render',
