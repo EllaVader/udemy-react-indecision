@@ -65,9 +65,55 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__person_js__ = __webpack_require__(2);
+//import './utils.js';
+
+
+
 
 console.log('app.js is running');
+// console.log(square(4));
+// console.log(add(100, 23));
+
+console.log(Object(__WEBPACK_IMPORTED_MODULE_1__person_js__["b" /* isAdult */])(5));
+console.log(Object(__WEBPACK_IMPORTED_MODULE_1__person_js__["a" /* canDrink */])(21));
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+console.log('utils.js is running');
+
+// can export this way too
+const square = (x) => x * x;
+/* unused harmony export square */
+
+const add = (a, b) => a + b;
+/* unused harmony export add */
+
+
+// export - Two types: 1. default export 2. named exports
+
+// named exports example - the name of the method to export, must match what is defined in import
+//export { square, add };
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isAdult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return canDrink; });
+
+
+const isAdult = (x) => x >= 18;
+const canDrink = (x) => x >= 21;
 
 /***/ })
 /******/ ]);
