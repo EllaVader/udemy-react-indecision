@@ -77,43 +77,58 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 console.log('app.js is running');
-// console.log(square(4));
-// console.log(add(100, 23));
+console.log(Object(__WEBPACK_IMPORTED_MODULE_0__utils_js__["c" /* square */])(4));
+console.log(Object(__WEBPACK_IMPORTED_MODULE_0__utils_js__["a" /* add */])(100, 23));
+console.log(Object(__WEBPACK_IMPORTED_MODULE_0__utils_js__["b" /* default */])(100, 25));
 
-console.log(Object(__WEBPACK_IMPORTED_MODULE_1__person_js__["b" /* isAdult */])(5));
+console.log(Object(__WEBPACK_IMPORTED_MODULE_1__person_js__["c" /* isAdult */])(5));
 console.log(Object(__WEBPACK_IMPORTED_MODULE_1__person_js__["a" /* canDrink */])(21));
+console.log(Object(__WEBPACK_IMPORTED_MODULE_1__person_js__["b" /* default */])(65));
 
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return square; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return add; });
 console.log('utils.js is running');
 
-// can export this way too
-const square = (x) => x * x;
-/* unused harmony export square */
-
-const add = (a, b) => a + b;
-/* unused harmony export add */
-
+// named export - can export this way too
+//export const square = (x) => x * x;
+//export const add = (a, b) => a + b;
 
 // export - Two types: 1. default export 2. named exports
+// default exports there must only be 1
+// named exports - the name of the method to export, must match what is defined in import
+//export { square, add, subtract as default };
 
-// named exports example - the name of the method to export, must match what is defined in import
-//export { square, add };
+
+const subtract = (a,b) => a - b;
+const square = (x) => x * x;
+const add = (a, b) => a + b;
+
+//or do export default like this:
+//export default subtract;
+
+// or do the export like this:
+/* harmony default export */ __webpack_exports__["b"] = ((a, b) => a - b);
+
 
 /***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isAdult; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isAdult; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return canDrink; });
-
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isSenior; });
 const isAdult = (x) => x >= 18;
 const canDrink = (x) => x >= 21;
+
+const isSenior = (x) => x >= 65;
+
+
 
 /***/ })
 /******/ ]);
