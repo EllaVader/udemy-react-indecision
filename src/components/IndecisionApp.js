@@ -1,13 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import AddOption from './AddOption';
 import Options from './Options';
 import Action from './Action';
 import Header from './Header';
+import OptionModal from './OptionModal';
 
 export default class IndecisionApp extends React.Component {
-  //we want to track the state of the options as they get updated
-  state = { options: [] };
+  // we want to track the state of the options as they get updated
+  // we want to track the selected option if the user clicks on the "what should I do" that pops up the modal.
+  // then this will be passed down to the relevant component
+  state = { 
+    options: [],
+    selectedOption: undefined 
+  };
   
   // handleDeleteOptions method needed here at parent level
   // but a child component will call it.
@@ -19,7 +24,7 @@ export default class IndecisionApp extends React.Component {
   handleDeleteOption = (optionToRemove) => {
     this.setState((prevState) => ({
       options: prevState.options.filter((option) => option !== optionToRemove)
-    }))
+    }));
   }
 
   handleAddOption = (option) => {
@@ -41,7 +46,15 @@ export default class IndecisionApp extends React.Component {
     //pick a random element in the array
     const randomNum = Math.floor(Math.random() * this.state.options.length);
     const option = this.state.options[randomNum];
-    alert(option);
+    this.setState(() => ({
+        selectedOption: option
+      }));
+  }
+
+  handleClearSelectedOption = () => {
+    this.setState(() => ({
+        selectedOption: undefined
+    }));
   }
 
   // lifecycle method on React that is called at the beginning of the life-cycle
@@ -93,6 +106,9 @@ export default class IndecisionApp extends React.Component {
         <AddOption
           handleAddOption={this.handleAddOption}
         />
+        <OptionModal 
+          selectedOption={this.state.selectedOption}
+          handleClearSelectedOption={this.handleClearSelectedOption}/>
       </div>
     );
   }
