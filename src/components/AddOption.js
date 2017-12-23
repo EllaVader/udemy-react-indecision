@@ -1,21 +1,11 @@
 import React from 'react';
 
 export default class AddOption extends React.Component {
-
-  // we need a constructor for this class because we are using "this" below in the handleAddOption event handler method
-  constructor(props) {
-    super(props);
-    this.handleAddOption = this.handleAddOption.bind(this);
-
-    // keeping track of the error message
-    this.state = {
-      error: undefined
-    };
-  }
-
+  //using the new ES6 syntax - not declaring it in the constructor.
+  state = { error: undefined };
   // we have a handleAddOption here (check if option is valued and clear the form)
   // but we also call the parent's handleAddOption because it owns the state of the options array
-  handleAddOption(e) {
+  handleAddOption = (e) =>  { //using the new ES6 syntax to avoid the bind issue that we needed in the constructor.
 
     e.preventDefault();
     const option = e.target.elements.option.value.trim();
