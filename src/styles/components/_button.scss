@@ -27,7 +27,8 @@
   padding: $s-size;
 }
 
-// bem using the modifier syntax which is the --
+// bem using the modifier syntax which is the --, 
+// so we have a button definition above, but this is a slight modification to it.
 .button--link {
   background: none;
   border: none;
