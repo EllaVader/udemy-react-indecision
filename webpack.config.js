@@ -20,7 +20,7 @@ module.exports = {
       exclude: /node_modules/
     }, {
         use: ['style-loader', 'css-loader', 'sass-loader'],
-        test: /\.scss$/,
+        test: /\.s?css$/,
     }]
   },
   devtool: 'cheap-module-source-map',
