@@ -51,21 +51,6 @@ class Counter extends React.Component {
     });
   }
 
-  // you can also pass in an object to setState, don't need to pass in a function
-  // passing in an object is an older way may end up becoming absolute
-  // setState is asynchronous so we don't know what order this will be executed in.
-  // don't use this way as it's problematic, use the function way.
-  // you can use this if don't need access to the previous values.
-  // handleReset() {
-  //   this.setState({
-  //     count: 0
-  //   });
-
-  //   this.setState({
-  //     count: this.state.count + 1
-  //   });
-  // }
-
   handleReset() {
     this.setState(() => {
       return {
@@ -87,35 +72,3 @@ class Counter extends React.Component {
 }
 
 ReactDOM.render(<Counter />, document.getElementById('app'));
-
-
-// let count = 0;
-// const addOne = () => {
-//   count++;
-//   renderCounterApp();
-// };
-
-// const minusOne = () => {
-//   count--;
-//   renderCounterApp();
-// };
-
-// const reset = () => {
-//   count = 0;
-//   renderCounterApp();
-// };
-
-// const renderCounterApp = () => {
-//   const templateTwo = (
-//     <div>
-//       <h1>Count: {count}</h1>
-//       <button onClick={addOne}>+1</button>
-//       <button onClick={minusOne}>-1</button>
-//       <button onClick={reset}>reset</button>
-//     </div>
-//   );
-//   //will only render those elements that need to be updated
-//   ReactDOM.render(templateTwo, appRoot);
-// };
-
-// renderCounterApp();
